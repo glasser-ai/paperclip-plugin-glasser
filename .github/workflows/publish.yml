@@ -1,0 +1,43 @@
+# Publish to npm with a provenance statement when a release tag is pushed.
+#
+# Tag convention: the bare semver, e.g. `0.1.0` (no "v" prefix), on main, and
+# it must equal package.json's version — npm refuses a mismatch by failing the
+# publish, which is the check we want.
+#
+# Auth: npm Trusted Publishing (OIDC) when the package is configured for this
+# repository and workflow; otherwise the NPM_TOKEN secret. Both carry
+# --provenance.
+name: Publish
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install dependencies
+        run: npm ci
+      - name: Tag matches package.json
+        run: |
+          v=$(node -p "require('./package.json').version")
+          [ "$v" = "${GITHUB_REF_NAME}" ] || { echo "tag ${GITHUB_REF_NAME} != package.json ${v}"; exit 1; }
+      - name: Release
+        run: |
+          [ -n "$NPM_TOKEN" ] && npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
+          npm run release
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

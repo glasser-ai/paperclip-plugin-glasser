@@ -1,0 +1,60 @@
+{
+  "name": "paperclip-plugin-glasser",
+  "version": "0.1.0",
+  "description": "Paperclip plugin: Glasser's GTM Solution endpoints (web research, company intelligence, people search, SEO, social, US market data) as agent tools. One Glasser Key, many data providers.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "paperclipPlugin": {
+    "manifest": "./dist/manifest.js",
+    "worker": "./dist/worker.js"
+  },
+  "scripts": {
+    "gen": "node scripts/gen-tools.mjs contract/openapi.json",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build && npm test",
+    "release": "npm publish --provenance --access public",
+    "gen:refresh": "curl -fsSL https://glasser.ai/docs/openapi.json -o contract/openapi.json && npm run gen"
+  },
+  "keywords": [
+    "paperclip",
+    "paperclip-plugin",
+    "glasser",
+    "lead-generation",
+    "enrichment",
+    "seo",
+    "web-search",
+    "social-media",
+    "gtm"
+  ],
+  "author": {
+    "name": "Glasser",
+    "email": "support@glasser.ai"
+  },
+  "license": "MIT",
+  "homepage": "https://glasser.ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glasser-ai/paperclip-plugin-glasser.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "peerDependencies": {
+    "@paperclipai/plugin-sdk": "*"
+  },
+  "devDependencies": {
+    "@paperclipai/plugin-sdk": "^2026.916.1",
+    "@types/node": "^24.13.6",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}
