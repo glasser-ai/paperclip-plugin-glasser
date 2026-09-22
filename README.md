@@ -59,6 +59,14 @@ Those live in Glasser, and the same tool definitions are used by the
 [Dify plugin](https://github.com/glasser-ai/dify-glasser) and the
 [n8n node](https://github.com/glasser-ai/n8n-nodes-glasser).
 
+## Company template
+
+`templates/gtm-company/` is a ready-made Paperclip company that runs on these
+tools: a CEO, a sales researcher, a market researcher and an SEO marketer, with
+a skill that tells them which tool answers which question and how to keep spend
+small. Import it as a new company, or attach its `gtm` team under your own CEO.
+See [templates/gtm-company/README.md](templates/gtm-company/README.md).
+
 ## Development
 
 ```bash

@@ -1,0 +1,51 @@
+# Paperclip-specific fidelity for the GTM Research Company package.
+# The markdown files are the portable package; this sidecar only says how
+# Paperclip should run each agent. Tools that do not understand it ignore it.
+#
+# Every agent defaults to the Claude Code adapter. Change `adapter.type` per
+# agent to codex_local, openclaw or any other adapter your instance runs; the
+# instructions in AGENTS.md do not depend on the runtime.
+#
+# The Glasser Key is NOT an agent env input: it is bound once, per company, in
+# the Glasser plugin's settings (Settings → Plugins → Glasser → Glasser Key),
+# and every agent's tool calls use it.
+schema: paperclip/v1
+agents:
+  ceo:
+    adapter:
+      type: claude_local
+    inputs:
+      env:
+        ANTHROPIC_API_KEY:
+          kind: secret
+          requirement: optional
+  sales-researcher:
+    adapter:
+      type: claude_local
+    inputs:
+      env:
+        ANTHROPIC_API_KEY:
+          kind: secret
+          requirement: optional
+  market-researcher:
+    adapter:
+      type: claude_local
+    inputs:
+      env:
+        ANTHROPIC_API_KEY:
+          kind: secret
+          requirement: optional
+  seo-marketer:
+    adapter:
+      type: claude_local
+    inputs:
+      env:
+        ANTHROPIC_API_KEY:
+          kind: secret
+          requirement: optional
+routines:
+  weekly-market-brief:
+    triggers:
+      - kind: schedule
+        cronExpression: "0 9 * * 1"
+        timezone: UTC
